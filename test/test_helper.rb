@@ -10,6 +10,9 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  def parse_data(response)
+    JSON.parse(response.body, symbolize_names: true)[:data]
+  end
 end
 
 Shoulda::Matchers.configure do |config|

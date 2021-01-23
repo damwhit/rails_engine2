@@ -3,7 +3,11 @@ class Api::V1::ItemsController < ApplicationController
 
   # GET /items
   def index
-    @items = Item.all
+    if params[:merchant_id]
+      @items = Item.where(merchant_id: params[:merchant_id])
+    else
+      @items = Item.all
+    end
 
     render json: ItemSerializer.new(@items)
   end

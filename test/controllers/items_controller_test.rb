@@ -7,7 +7,10 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
 
   test "should get index" do
     get api_v1_items_url, as: :json
+
     assert_response :success
+    data = parse_data(@response)
+    assert_equal(data.length, 2)
   end
 
   test "should create item" do
@@ -16,6 +19,15 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response 201
+
+    data = parse_data(@response)
+    assert_equal(@item.name, data[:attributes][:name])
+  end
+
+  test "should not create an item with bad params" do
+    post api_v1_items_url, params: { name: @item.name, unit_price: @item.unit_price }, as: :json
+
+    assert_response 422
   end
 
   test "should show item" do
